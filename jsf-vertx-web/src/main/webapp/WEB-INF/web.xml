@@ -1,0 +1,100 @@
+<web-app id="WebApp_ID" version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <display-name>Web Application</display-name>
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value>
+    </context-param>   
+   
+  
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>    
+    <context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>server</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+        <param-value>.xhtml</param-value>
+    </context-param>  
+   
+   
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping> 
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.xhtml</url-pattern>
+    </servlet-mapping>     
+     
+    <error-page>
+        <error-code>500</error-code>
+        <location>/errorpages/viewexpire.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/errorpages/viewexpire.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>javax.crypto.BadPaddingException</exception-type>
+        <location>/errorpages/viewexpire.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>javax.faces.FacesException</exception-type>
+        <location>/errorpages/viewexpire.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.NullPointerException</exception-type>
+        <location>/errorpages/viewexpire.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>com.sun.facelets.FaceletException</exception-type>
+        <location>/errorpages/viewexpire.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/errorpages/viewexpire.jsp</location>
+    </error-page>   
+    <error-page>
+        <exception-type>java.lang.NumberFormatException</exception-type>
+        <location>/errorpages/viewexpire.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>javax.faces.convert.ConverterException</exception-type>
+        <location>/errorpages/viewexpire.jsp</location>
+    </error-page>
+    
+    <error-page>
+        <exception-type>javax.el.PropertyNotFoundException</exception-type>
+        <location>/errorpages/viewexpire.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/errorpages/viewexpire.jsp</location>
+    </error-page>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>No access</web-resource-name>
+            <url-pattern>*.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint/>
+    </security-constraint>  
+ 
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>     
+    
+    <welcome-file-list>
+        <welcome-file>index.jsf</welcome-file>
+    </welcome-file-list>  
+
+</web-app>

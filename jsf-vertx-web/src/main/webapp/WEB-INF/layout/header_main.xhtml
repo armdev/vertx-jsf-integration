@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">   
+
+    <title>Fast Messaging</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Modern web"/>
+    <meta name="author" content="Armen Arzumanyan"/>
+    <!-- Bootstrap core CSS -->
+    <link href="#{request.contextPath}/resources/css/bootstrap.css" rel="stylesheet"/>
+    <!-- Do not change awesome location -->
+    <link href="#{request.contextPath}/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- http://fortawesome.github.io/Font-Awesome/icons/  examples
+         http://fortawesome.github.io/Font-Awesome/examples/
+    -->
+    <script src="#{request.contextPath}/resources/js/jquery.js"></script>
+    <script>
+        $.noConflict();
+        JQuery.noConflict();
+    </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="#{request.contextPath}/resources/assets/js/html5shiv.js"></script>
+      <script src="#{request.contextPath}/resources/assets/js/respond.min.js"></script>
+   <![endif]-->
+    <style type="text/css">
+        .ui-growl{
+            position:absolute;
+            top:120px;
+            left:70%;
+        }
+    </style>    
+    <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+    <script src="vertx-eventbus.js"></script>
+
+    <script>
+        var eb = new EventBus("http://localhost:9999/eventbus");
+        eb.onopen = function () {
+            eb.registerHandler("middleBus", function (err, msg) {
+                //var str = "<code>" + msg.body + "</code><br/>";
+                var str = "" + msg.body + "";
+                httpGet('http://localhost:8080/jsf-vertx-web/logmanager?message=' + str);
+                //  $('statusOne').val(msg.body);
+                // $('#statusOne').prepend(str);                                                                             
+
+            })
+        }
+        function httpGet(theUrl)
+        {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", theUrl, false); // false for synchronous request
+            xmlHttp.send(null);
+            return xmlHttp.responseText;
+        }
+    </script>
+
+</html>
+
