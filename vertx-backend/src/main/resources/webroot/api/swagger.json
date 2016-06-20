@@ -1,0 +1,73 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Operations that can be invoked in the aloha microservices",
+    "version" : "1.0.0",
+    "title" : "Aloha microservices REST API",
+    "contact" : {
+      "name" : "developer@redhat.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "basePath" : "/api",
+  "schemes" : [ "http" ],
+  "paths" : {
+    "/health" : {
+      "get" : {
+        "summary" : "Used to verify the health of the service",
+        "description" : "",
+        "operationId" : "health",
+        "produces" : [ "text/plain" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "/aloha" : {
+      "get" : {
+        "summary" : "Returns the greeting in Hawaiian",
+        "description" : "",
+        "operationId" : "aloha",
+        "produces" : [ "text/plain" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "/aloha-chaining" : {
+      "get" : {
+        "summary" : "Returns the greeting plus the next service in the chain",
+        "description" : "",
+        "operationId" : "alohaChaining",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
