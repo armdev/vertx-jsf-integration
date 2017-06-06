@@ -6,8 +6,7 @@
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
-    </context-param>   
-   
+    </context-param>     
   
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -35,48 +34,48 @@
      
     <error-page>
         <error-code>500</error-code>
-        <location>/errorpages/viewexpire.jsp</location>
+        <location>/error/error.jsf</location>
     </error-page>
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
-        <location>/errorpages/viewexpire.jsp</location>
+        <location>/error/error.jsf</location>
     </error-page>
     <error-page>
         <exception-type>javax.crypto.BadPaddingException</exception-type>
-        <location>/errorpages/viewexpire.jsp</location>
+        <location>/error/error.jsf</location>
     </error-page>
     <error-page>
         <exception-type>javax.faces.FacesException</exception-type>
-        <location>/errorpages/viewexpire.jsp</location>
+        <location>/error/error.jsf</location>
     </error-page>
     <error-page>
         <exception-type>java.lang.NullPointerException</exception-type>
-        <location>/errorpages/viewexpire.jsp</location>
+        <location>/error/error.jsf</location>
     </error-page>
     <error-page>
         <exception-type>com.sun.facelets.FaceletException</exception-type>
-        <location>/errorpages/viewexpire.jsp</location>
+        <location>/error/error.jsf</location>
     </error-page>
     <error-page>
         <error-code>404</error-code>
-        <location>/errorpages/viewexpire.jsp</location>
+        <location>/error/error.jsf</location>
     </error-page>   
     <error-page>
         <exception-type>java.lang.NumberFormatException</exception-type>
-        <location>/errorpages/viewexpire.jsp</location>
+        <location>/error/error.jsf</location>
     </error-page>
     <error-page>
         <exception-type>javax.faces.convert.ConverterException</exception-type>
-        <location>/errorpages/viewexpire.jsp</location>
+        <location>/error/error.jsf</location>
     </error-page>
     
     <error-page>
         <exception-type>javax.el.PropertyNotFoundException</exception-type>
-        <location>/errorpages/viewexpire.jsp</location>
+        <location>/error/error.jsf</location>
     </error-page>
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
-        <location>/errorpages/viewexpire.jsp</location>
+        <location>/error/error.jsf</location>
     </error-page>
     
     <security-constraint>
