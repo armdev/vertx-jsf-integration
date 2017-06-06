@@ -10,12 +10,9 @@ public class ApplicationStart {
         Vertx vertx = Vertx.vertx();
         Router router = Router.router(vertx);
         vertx.deployVerticle(new RESTVerticle());
-  //    vertx.deployVerticle(new Receiver());
-        EventBus eventBus = vertx.eventBus();        
+        //    vertx.deployVerticle(new Receiver());
+        EventBus eventBus = vertx.eventBus();
         eventBus.registerDefaultCodec(MessageDTO.class, new CustomMessageCodec());
-        
-       
-       
 
     }
 

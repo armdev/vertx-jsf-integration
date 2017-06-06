@@ -62,8 +62,4 @@ public class MessageDTO {
         return "Message{" + "username=" + username + ", message=" + message + '}';
     }
 
-  
-
-    
-    
 }

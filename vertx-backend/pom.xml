@@ -14,25 +14,19 @@
     <properties>
 		
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <java.main.class>com.project.backend.ApplicationStart</java.main.class>
-
-
         <!-- maven-compiler-plugin -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-
         <!-- other plugin versions -->
         <netflix.feign.version>8.15.1</netflix.feign.version>
         <vertx.version>3.2.1</vertx.version>
         <hystrix.version>1.5.1</hystrix.version>
         <version.exec.plugin>1.4.0</version.exec.plugin>
         <brave.version>3.5.0</brave.version>
-
         <!-- fabric8 version -->
         <fabric8.version>2.2.105</fabric8.version>
         <docker.maven.plugin.version>0.14.2</docker.maven.plugin.version>
-
               
     </properties>
 
@@ -96,9 +90,7 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.2</version>
         </dependency>
-
     </dependencies>
-
     <build>
         <finalName>vertx-backend</finalName>
         <plugins>
@@ -132,10 +124,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-           
-            
+            </plugin>                  
         </plugins>
     </build>
-
 </project>

@@ -21,8 +21,8 @@ import java.util.List;
 
 public class RESTVerticle extends AbstractVerticle {
 
-    private EventBus eventBus = null;
-    private List<MessageDTO> mainList = new ArrayList<>();
+    private final EventBus eventBus = null;
+    private final List<MessageDTO> mainList = new ArrayList<>();
 
     @Override
     public void start() throws Exception {
@@ -61,17 +61,17 @@ public class RESTVerticle extends AbstractVerticle {
                 .handler(EventMetricsStreamHandler.createHandler());
 
         router.route("/*").handler(StaticHandler.create());
-        EventBus eventBus = vertx.eventBus();
-        eventBus.consumer("messagesBus", message -> {
+        EventBus eventBusLocal = vertx.eventBus();
+        eventBusLocal.consumer("messagesBus", message -> {
             MessageDTO customMessage = (MessageDTO) message.body();
             System.out.println("Receiver MAIN " + customMessage.toString());
-            mainList.add(0,customMessage);
+            mainList.add(0, customMessage);
             message.reply(customMessage);
         });
         //eventBus.publish("middleBus", "Here we go!!");
 
         vertx.createHttpServer().requestHandler(router::accept).listen(9999);
-      //  vertx.setPeriodic(4000, t -> vertx.eventBus().publish("middleBus", "Hello From Server"));
+        //  vertx.setPeriodic(4000, t -> vertx.eventBus().publish("middleBus", "Hello From Server"));
         System.out.println("Service running at 0.0.0.0:9999");
 
     }
@@ -92,8 +92,8 @@ public class RESTVerticle extends AbstractVerticle {
         eventBus.publish("messagesBus", message);
         Date currentDate = new Date();
 
-         System.out.println("@@@@@@@Publishing log @@@@@@");   
-        eventBus.publish("middleBus", "Message from @" + message.getUsername() + " received at " + currentDate.toString());    
+        System.out.println("@@@@@@@Publishing log @@@@@@");
+        eventBus.publish("middleBus", "Message from @" + message.getUsername() + " received at " + currentDate.toString());
 
     }
 
