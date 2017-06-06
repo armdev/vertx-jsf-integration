@@ -5,29 +5,24 @@
 
     <groupId>com.project.backend</groupId>
     <artifactId>aloha</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
 
     <name>vertx-backend</name>
     <description>vertx-backend</description>
 
-    <properties>
-		
+    <properties>		
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.main.class>com.project.backend.ApplicationStart</java.main.class>
-        <!-- maven-compiler-plugin -->
+        <java.main.class>com.project.backend.ApplicationStart</java.main.class>       
         <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <!-- other plugin versions -->
-        <netflix.feign.version>8.15.1</netflix.feign.version>
-        <vertx.version>3.2.1</vertx.version>
-        <hystrix.version>1.5.1</hystrix.version>
+        <maven.compiler.target>1.8</maven.compiler.target>     
+        <netflix.feign.version>8.18.0</netflix.feign.version>
+        <vertx.version>3.4.1</vertx.version>
+        <hystrix.version>1.5.6</hystrix.version>
         <version.exec.plugin>1.4.0</version.exec.plugin>
-        <brave.version>3.5.0</brave.version>
-        <!-- fabric8 version -->
+        <brave.version>3.7.0</brave.version>      
         <fabric8.version>2.2.105</fabric8.version>
-        <docker.maven.plugin.version>0.14.2</docker.maven.plugin.version>
-              
+        <docker.maven.plugin.version>0.14.2</docker.maven.plugin.version>              
     </properties>
 
     <dependencies>
@@ -60,16 +55,12 @@
             <groupId>com.netflix.feign</groupId>
             <artifactId>feign-httpclient</artifactId>
             <version>${netflix.feign.version}</version>
-        </dependency>
-
-        <!-- Vertx Hystrix Stream -->
+        </dependency>      
         <dependency>
             <groupId>com.github.kennedyoliveira</groupId>
             <artifactId>hystrix-vertx-metrics-stream</artifactId>
             <version>${hystrix.version}</version>
         </dependency>
-
-        <!-- Brave Zipkin -->
         <dependency>
             <groupId>com.github.kristofa</groupId>
             <artifactId>brave-web-servlet-filter</artifactId>
@@ -88,7 +79,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.2</version>
+            <version>4.5.3</version>
         </dependency>
     </dependencies>
     <build>
@@ -105,7 +96,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.3</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>

@@ -1,6 +1,5 @@
 package com.project.backend;
 
-import com.github.kennedyoliveira.hystrix.contrib.vertx.metricsstream.EventMetricsStreamHandler;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.http.HttpMethod;
@@ -27,21 +26,12 @@ public class RESTVerticle extends AbstractVerticle {
     @Override
     public void start() throws Exception {
         Router router = Router.router(vertx);
-
         BridgeOptions options = new BridgeOptions().addOutboundPermitted(new PermittedOptions().setAddress("middleBus"));
-
         router.route("/eventbus/*").handler(SockJSHandler.create(vertx).bridge(options, event -> {
-
-            // You can also optionally provide a handler like this which will be passed any events that occur on the bridge
-            // You can use this for monitoring or logging, or to change the raw messages in-flight.
-            // It can also be used for fine grained access control.
             if (event.type() == BridgeEventType.SOCKET_CREATED) {
                 System.out.println("A socket was created");
             }
-
-            // This signals that it's ok to process the event
             event.complete(true);
-
         }));
 
         router.route().handler(BodyHandler.create());
@@ -51,14 +41,13 @@ public class RESTVerticle extends AbstractVerticle {
 
         router.post("/api/message").handler(this::publishToEventBus);
         router.get("/api/messagelist").handler(this::getMessagesFromBus);
-        // Health Check
+
         router.get("/api/health").handler(ctx -> {
             ctx.response().end("I'm ok");
         });
 
         // Hysrix Stream Endpoint
-        router.get(EventMetricsStreamHandler.DEFAULT_HYSTRIX_PREFIX)
-                .handler(EventMetricsStreamHandler.createHandler());
+       // router.get(EventMetricsStreamHandler.DEFAULT_HYSTRIX_PREFIX);
 
         router.route("/*").handler(StaticHandler.create());
         EventBus eventBusLocal = vertx.eventBus();
@@ -77,7 +66,7 @@ public class RESTVerticle extends AbstractVerticle {
     }
 
     private void publishToEventBus(RoutingContext routingContext) {
-        EventBus eventBus = vertx.eventBus();
+        EventBus eventBusLocal = vertx.eventBus();
         // System.out.println("routingContext.getBodyAsString() " + routingContext.getBodyAsString());
         final MessageDTO message = Json.decodeValue(routingContext.getBodyAsString(),
                 MessageDTO.class);
@@ -88,12 +77,11 @@ public class RESTVerticle extends AbstractVerticle {
                 .putHeader("content-type", "application/json; charset=utf-8")
                 .end(Json.encodePrettily(message));
 
-        //System.out.println("pushing!!!!!! ");
-        eventBus.publish("messagesBus", message);
+        eventBusLocal.publish("messagesBus", message);
         Date currentDate = new Date();
 
         System.out.println("@@@@@@@Publishing log @@@@@@");
-        eventBus.publish("middleBus", "Message from @" + message.getUsername() + " received at " + currentDate.toString());
+        eventBusLocal.publish("middleBus", "Message from @" + message.getUsername() + " received at " + currentDate.toString());
 
     }
 
@@ -104,29 +92,4 @@ public class RESTVerticle extends AbstractVerticle {
 
     }
 
-    //        router.get("/api/message").handler(routingContext -> {
-//
-//            final MessageDTO message = Json.decodeValue(routingContext.getBodyAsString(),
-//                    MessageDTO.class);
-//
-////            HttpServerResponse response = routingContext.response();
-////            //System.out.println("routingContext.getBodyAsString() " + routingContext.getBodyAsString());
-////            response.setStatusCode(201)
-////                    .putHeader("content-type", "application/json; charset=utf-8")
-////                    .end(Json.encodePrettily(message));
-////            
-//            eventBus.publish("messagesBus", message);
-//        });
-//        router.get("/api/messagelist").handler(routingContext -> {
-//            eventBus.consumer("messagesBus", message -> {
-//                MessageDTO customMessage = (MessageDTO) message.body();
-//                HttpServerResponse response = routingContext.response();
-//                System.out.println("customMessage->>>>>>>> " + customMessage);
-//                if (customMessage != null) {
-//                    response.putHeader("content-type", "application/json; charset=utf-8")
-//                            .end(Json.encodePrettily(customMessage));
-//                }
-//            });
-//
-//        });
 }
