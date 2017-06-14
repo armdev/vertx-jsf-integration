@@ -48,7 +48,7 @@ public class LogManager extends HttpServlet {
         PrintWriter out = response.getWriter();
         message = context.getExternalContext().getRequestParameterMap().get("message");
 
-        //System.out.println("Got a new message " + message);
+        System.out.println("Servlet: Got a new message " + message);
         appManager.getLogList().add(0, message);
 
     }

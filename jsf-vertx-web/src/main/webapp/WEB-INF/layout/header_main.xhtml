@@ -44,7 +44,7 @@
             eb.registerHandler("middleBus", function (err, msg) {
                 //var str = "<code>" + msg.body + "</code><br/>";
                 var str = "" + msg.body + "";
-                httpGet('http://localhost:8080/jsf-vertx-web/logmanager?message=' + str);
+                httpGet('http://localhost:8585/jsf-vertx-web/logmanager?message=' + str);
                 //  $('statusOne').val(msg.body);
                 // $('#statusOne').prepend(str);                                                                             
 

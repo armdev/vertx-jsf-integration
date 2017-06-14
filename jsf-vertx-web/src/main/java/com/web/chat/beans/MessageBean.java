@@ -21,11 +21,5 @@ public class MessageBean implements Serializable {
     @Setter
     @Getter
     private List<String> logList = new ArrayList<>();
-
    
-  
-   
-    
-    
-
 }

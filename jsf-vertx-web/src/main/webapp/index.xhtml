@@ -12,6 +12,7 @@
 
     <h:head>
         <f:metadata> 
+
         </f:metadata> 
     </h:head>
     <f:view contracts="default" transient="false">
@@ -20,6 +21,7 @@
             <ui:define name="content"> 
                 <div class="content">
                     <div class="row">
+                        <br/><br/>
                         <h:form  prependId="false">
                             <div class="col-md-4"> 
                                 <div class="form-group">
@@ -34,8 +36,7 @@
                                 <div class="form-group">
                                     <button type="submit" jsf:action="#{frontBean.sendMessage()}" class="btn btn-info">Send</button>
                                 </div>
-                            </div>                         
-
+                            </div>
                             <div class="col-md-3">                               
                                 <hr/>
                                 <p:poll interval="2"  update="chat" listener="#{frontBean.addMessage()}" />

@@ -11,15 +11,17 @@ import lombok.ToString;
  *
  * @author armenar
  */
-@Setter
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class Message {
 
+    @Setter
+    @Getter
     private String username;
-    private String message;  
-    
+    @Setter
+    @Getter
+    private String message;
+
 }
