@@ -1,65 +1,53 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui"    
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:c="http://java.sun.com/jsp/jstl/core"     
-      xmlns:jsf="http://xmlns.jcp.org/jsf"         
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui"  
       xmlns:passthrough="http://xmlns.jcp.org/jsf/passthrough"     
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">     
-
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <h:head>
-        <f:metadata> 
+        <title>Super chat</title>
+        <ui:include src="/WEB-INF/layout/header_main.xhtml"/>
+    </h:head>       
+    <f:view transient="false">
+        <h:form>
+            <p:layout  fullPage="true" style="min-width:400px;min-height:200px;">
+                <p:layoutUnit position="west" resizable="true" size="400" minSize="40" maxSize="600">                   
+                    <p:panel id="panel" style="width: 400px;" header="Message Effects" toggleable="true">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:outputLabel for="username" value="UserName" />
+                            <input type="text" jsf:id="username" class="form-control" jsf:value="#{frontBean.message.username}"
+                                   id="username" style="width:200px" jsf:required="true" name="username" placeholder="#{i18n.username}" />
 
-        </f:metadata> 
-    </h:head>
-    <f:view contracts="default" transient="false">
-        <ui:include src="/WEB-INF/layout/style.xhtml"/>
-        <ui:composition template="/template.xhtml">              
-            <ui:define name="content"> 
-                <div class="content">
-                    <div class="row">
-                        <br/><br/>
-                        <h:form  prependId="false">
-                            <div class="col-md-4"> 
-                                <div class="form-group">
-                                    <label>#{i18n.username}</label>
-                                    <input type="text" class="form-control" jsf:value="#{frontBean.message.username}"
-                                           id="username" style="width:200px" jsf:required="true" name="username" placeholder="#{i18n.username}" />
-                                </div>
-                                <div class="form-group">
-                                    <label>#{i18n.message}</label>
-                                    <input type="text" class="form-control" id="message" jsf:required="true" jsf:value="#{frontBean.message.message}" style="width:200px" name="message" placeholder="#{i18n.message}" />
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" jsf:action="#{frontBean.sendMessage()}" class="btn btn-info">Send</button>
-                                </div>
-                            </div>
-                            <div class="col-md-3">                               
-                                <hr/>
-                                <p:poll interval="2"  update="chat" listener="#{frontBean.addMessage()}" />
-                                <p:dataTable value="#{frontBean.messageList}" id="chat" rendered="#{not empty frontBean.messageList}" rows="15" var="list">
-                                    <p:column headerText="Top Messages">
-                                        @ #{list.username} - #{list.message} 
-                                    </p:column>
-                                </p:dataTable>                                                  
-                            </div>
-                            <div class="col-md-3">                               
-                                <hr/>
-                                <p:poll interval="2"  update="userlog" listener="#{frontBean.addMessage1()}"/>                                
-                                <p:dataTable value="#{messageBean.logList}" id="userlog"
-                                             rendered="#{not empty messageBean.logList}" rows="15" var="list">
-                                    <p:column headerText="Top logs">
-                                        @ #{list}
-                                    </p:column>
-                                </p:dataTable>                                                  
-                            </div>
-                        </h:form>                        
-                    </div>
-                </div>
-            </ui:define>
-        </ui:composition>
-    </f:view>
+                            <p:outputLabel for="message" value="Message " />
+                            <input type="text"  class="form-control" jsf:id="message" jsf:required="true" jsf:value="#{frontBean.message.message}" style="width:200px" name="message" placeholder="#{i18n.message}" />
+                            <button type="submit" jsf:action="#{frontBean.sendMessage()}" class="btn btn-danger">Send</button>
+                        </h:panelGrid>
+                    </p:panel>
+                </p:layoutUnit>
+                <p:layoutUnit position="center">
+                    <p:poll interval="2"  update="chat" listener="#{frontBean.addMessage()}" />
+                    <p:dataTable value="#{frontBean.messageList}" id="chat" rendered="#{not empty frontBean.messageList}" rows="15" var="list">
+                        <p:column headerText="Top Messages">
+                            @ #{list.username} - #{list.message} 
+                        </p:column>
+                    </p:dataTable>                           
+                </p:layoutUnit>
+                <p:layoutUnit position="east"  size="400">                   
+                    <p:poll interval="2"  update="userlog" listener="#{frontBean.addMessage1()}"/>                                
+                    <p:dataTable value="#{messageBean.logList}" id="userlog"
+                                 rendered="#{not empty messageBean.logList}" rows="15" var="list">
+                        <p:column headerText="Top logs">
+                            @ #{list}
+                        </p:column>
+                    </p:dataTable>         
+                </p:layoutUnit>
+            </p:layout>
+        </h:form>
+    </f:view>    
 </html>
+
