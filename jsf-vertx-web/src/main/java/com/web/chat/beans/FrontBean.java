@@ -1,33 +1,42 @@
-package com.web.jsf;
+package com.web.chat.beans;
 
 import com.sun.faces.component.visit.FullVisitContext;
-import com.web.jsf.rest.RESTClientBean;
+import com.web.chat.client.RESTClientBean;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
-import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author armenar
  */
-@ManagedBean(name = "frontBean")
+@Named
 @RequestScoped
 public class FrontBean implements Serializable {
 
-    @ManagedProperty(value = "#{restClient}")
+    private static final long serialVersionUID = 1L;
+    
+
+    @Inject
     private RESTClientBean restClient;
 
+    @Setter
+    @Getter
     private Message message;
+    @Setter
+    @Getter
     private String newMessage;
 
     public FrontBean() {
@@ -36,17 +45,17 @@ public class FrontBean implements Serializable {
     @PostConstruct
     public void init() {
         message = new Message();
-        
+
     }
 
     public void addMessage() {
-       // System.out.println("I am a listener");
-      
+        // System.out.println("I am a listener");
+
     }
-    
+
     public void addMessage1() {
-   //     System.out.println("I am a listener second");
-      
+        //     System.out.println("I am a listener second");
+
     }
 
     public void sendMessage() {
@@ -58,22 +67,18 @@ public class FrontBean implements Serializable {
         }
     }
 
-    
     //not used
     public String getNewMessage() {
         Map<String, String> requestParams = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         for (Map.Entry<String, String> entry : requestParams.entrySet()) {
-           // System.out.println(entry.getKey() + "/" + entry.getValue());
+            // System.out.println(entry.getKey() + "/" + entry.getValue());
         }
 
-        //String str = requestParams.get("status");
-        //  System.out.println("Status string " + str);
-        //  System.out.println("getNewMessage !!! " + newMessage);
         String strFlash = (String) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("super");
-        //System.out.println("strFlash " + strFlash);
+
         UIComponent component = findComponent("status");
         if (component != null) {
-           // System.out.println("component " + component.toString());
+
         }
         return newMessage;
     }
@@ -85,39 +90,20 @@ public class FrontBean implements Serializable {
         UIViewRoot root = context.getViewRoot();
         final UIComponent[] found = new UIComponent[1];
 
-        root.visitTree(new FullVisitContext(context), new VisitCallback() {
-            @Override
-            public VisitResult visit(VisitContext context, UIComponent component) {
-                if (component.getId().equals(id)) {
-                    found[0] = component;
-                    return VisitResult.COMPLETE;
-                }
-                return VisitResult.ACCEPT;
+        root.visitTree(new FullVisitContext(context), (VisitContext context1, UIComponent component) -> {
+            if (component.getId().equals(id)) {
+                found[0] = component;
+                return VisitResult.COMPLETE;
             }
+            return VisitResult.ACCEPT;
         });
 
         return found[0];
 
     }
 
-    public void setNewMessage(String newMessage) {
-        this.newMessage = newMessage;
-    }
-
     public List<Message> getMessageList() {
         return restClient.getMessageList();
-    }
-
-    public void setRestClient(RESTClientBean restClient) {
-        this.restClient = restClient;
-    }
-
-    public Message getMessage() {
-        return message;
-    }
-
-    public void setMessage(Message message) {
-        this.message = message;
     }
 
 }

@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" debug="0" docBase="jsf-vertx-web" path="/jsf-vertx-web" reloadable="true"/>
+<Context antiJARLocking="true" path="/jsf-vertx-web">
+  <Resource auth="Container" factory="org.jboss.weld.resources.ManagerObjectFactory" name="BeanManager" type="javax.enterprise.inject.spi.BeanManager"/>
+</Context>

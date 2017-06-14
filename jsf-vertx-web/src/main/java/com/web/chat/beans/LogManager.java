@@ -1,6 +1,6 @@
-package com.web.jsf;
+package com.web.chat.beans;
 
-import com.web.jsf.rest.RESTClientBean;
+import com.web.chat.utils.FacesUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.faces.context.FacesContext;
@@ -9,10 +9,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.Getter;
+import lombok.Setter;
 
 @WebServlet(urlPatterns = {"/logmanager"})
 public class LogManager extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
+
+    @Setter
+    @Getter
     private String message;
 
     @Override
@@ -40,19 +46,11 @@ public class LogManager extends HttpServlet {
                 context, "#{messageBean}", MessageBean.class);
 
         PrintWriter out = response.getWriter();
-        message = (String) context.getExternalContext().getRequestParameterMap().get("message");
+        message = context.getExternalContext().getRequestParameterMap().get("message");
 
         //System.out.println("Got a new message " + message);
         appManager.getLogList().add(0, message);
 
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
 }

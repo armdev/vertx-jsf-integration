@@ -1,21 +1,23 @@
-package com.web.jsf.rest;
+package com.web.chat.client;
 
-import com.web.jsf.Message;
-import com.web.jsf.util.ParamUtil;
+import com.web.chat.beans.Message;
+import com.web.chat.utils.ParamUtil;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONObject;
@@ -24,12 +26,11 @@ import org.json.simple.JSONObject;
  *
  * @author armenar
  */
-@ManagedBean(name = "restClient")
+@Named
 @ApplicationScoped
 public class RESTClientBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-   
 
     public RESTClientBean() {
 
@@ -52,7 +53,7 @@ public class RESTClientBean implements Serializable {
             request.addHeader("content-type", "application/json");
             request.addHeader("charset", "utf8");
             request.setEntity(params);
-            HttpResponse response = (HttpResponse) httpClient.execute(request);
+            HttpResponse response = httpClient.execute(request);
             HttpEntity entity = response.getEntity();
             userId = ParamUtil.integerValue(EntityUtils.toString(entity));
         } catch (IOException ex) {
@@ -92,13 +93,10 @@ public class RESTClientBean implements Serializable {
             if (entity != null) {
                 list = mapper.readValue(EntityUtils.toString(entity), List.class);
             }
-        } catch (Exception e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
         return list;
     }
-
-  
-    
 
 }
