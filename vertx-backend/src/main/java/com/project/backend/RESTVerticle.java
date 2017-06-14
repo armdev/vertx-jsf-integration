@@ -33,54 +33,42 @@ public class RESTVerticle extends AbstractVerticle {
             }
             event.complete(true);
         }));
-
         router.route().handler(BodyHandler.create());
         router.route().handler(CorsHandler.create("*")
                 .allowedMethod(HttpMethod.GET)
                 .allowedHeader("Content-Type"));
-
+        
         router.post("/api/message").handler(this::publishToEventBus);
+        
         router.get("/api/messagelist").handler(this::getMessagesFromBus);
-
         router.get("/api/health").handler(ctx -> {
             ctx.response().end("I'm ok");
         });
-
-        // Hysrix Stream Endpoint
-       // router.get(EventMetricsStreamHandler.DEFAULT_HYSTRIX_PREFIX);
-
         router.route("/*").handler(StaticHandler.create());
         EventBus eventBusLocal = vertx.eventBus();
         eventBusLocal.consumer("messagesBus", message -> {
             MessageDTO customMessage = (MessageDTO) message.body();
-            System.out.println("Receiver MAIN " + customMessage.toString());
+            System.out.println("MessagesBus Receiver: " + customMessage.toString());
             mainList.add(0, customMessage);
             message.reply(customMessage);
-        });
-        //eventBus.publish("middleBus", "Here we go!!");
-
-        vertx.createHttpServer().requestHandler(router::accept).listen(9999);
-        //  vertx.setPeriodic(4000, t -> vertx.eventBus().publish("middleBus", "Hello From Server"));
+        });   
+        vertx.createHttpServer().requestHandler(router::accept).listen(9999);       
         System.out.println("Service running at 0.0.0.0:9999");
-
     }
 
     private void publishToEventBus(RoutingContext routingContext) {
-        EventBus eventBusLocal = vertx.eventBus();
-        // System.out.println("routingContext.getBodyAsString() " + routingContext.getBodyAsString());
+        EventBus eventBusLocal = vertx.eventBus();        
         final MessageDTO message = Json.decodeValue(routingContext.getBodyAsString(),
                 MessageDTO.class);
-        System.out.println("message#### " + message);
-
+        System.out.println("Publishing message to bus ");
+        System.out.println("Current Message==> " + message);
         HttpServerResponse response = routingContext.response();
         response.setStatusCode(201)
                 .putHeader("content-type", "application/json; charset=utf-8")
                 .end(Json.encodePrettily(message));
-
         eventBusLocal.publish("messagesBus", message);
         Date currentDate = new Date();
-
-        System.out.println("@@@@@@@Publishing log @@@@@@");
+        System.out.println("@@@@@@@Publishing logs to middleBus!!!! ");
         eventBusLocal.publish("middleBus", "Message from @" + message.getUsername() + " received at " + currentDate.toString());
 
     }

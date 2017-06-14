@@ -9,8 +9,7 @@ public class ApplicationStart {
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
         Router router = Router.router(vertx);
-        vertx.deployVerticle(new RESTVerticle());
-        //    vertx.deployVerticle(new Receiver());
+        vertx.deployVerticle(new RESTVerticle());     
         EventBus eventBus = vertx.eventBus();
         eventBus.registerDefaultCodec(MessageDTO.class, new CustomMessageCodec());
 
