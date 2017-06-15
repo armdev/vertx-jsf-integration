@@ -86,4 +86,7 @@ public class ParamUtil {
 
         return reValue;
     }
+
+    private ParamUtil() {
+    }
 }

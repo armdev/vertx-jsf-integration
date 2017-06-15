@@ -1,5 +1,6 @@
 package com.web.chat.beans;
 
+import com.web.chat.models.Message;
 import com.web.chat.client.RESTClientBean;
 import java.io.Serializable;
 import java.util.List;

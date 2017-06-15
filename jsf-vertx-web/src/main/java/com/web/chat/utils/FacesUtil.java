@@ -37,14 +37,14 @@ public class FacesUtil {
         return facesContext;
     }
 
-
     private FacesUtil() {
     }
+
     // Wrap the protected FacesContext.setCurrentInstance() in a inner class.
     private static abstract class FacesContextWrapper extends FacesContext {
+
         protected static void setCurrentInstance(FacesContext facesContext) {
             FacesContext.setCurrentInstance(facesContext);
         }
     }
 }
-

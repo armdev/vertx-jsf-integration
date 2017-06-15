@@ -1,6 +1,6 @@
 package com.web.chat.client;
 
-import com.web.chat.beans.Message;
+import com.web.chat.models.Message;
 import com.web.chat.utils.ParamUtil;
 import java.io.IOException;
 import java.io.Serializable;

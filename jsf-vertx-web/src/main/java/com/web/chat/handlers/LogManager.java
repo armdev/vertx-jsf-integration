@@ -1,5 +1,6 @@
-package com.web.chat.beans;
+package com.web.chat.handlers;
 
+import com.web.chat.beans.MessageBean;
 import com.web.chat.utils.FacesUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,7 +30,7 @@ public class LogManager extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doActivation(request, response);
+        traceBusLogs(request, response);
 
     }
 
@@ -38,7 +39,7 @@ public class LogManager extends HttpServlet {
             throws ServletException, IOException {
     }
 
-    private void doActivation(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void traceBusLogs(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         FacesContext context = FacesUtil.getFacesContext(request, response);
 

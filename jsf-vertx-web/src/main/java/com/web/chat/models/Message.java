@@ -1,4 +1,4 @@
-package com.web.chat.beans;
+package com.web.chat.models;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
