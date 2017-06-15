@@ -88,8 +88,10 @@ public class ChatResource extends AbstractVerticle {
     }
 
     private void getMessagesFromBus(RoutingContext routingContext) {
+        mainList = new ArrayList<>();
         //get from database
         boolean check = Base.hasConnection();
+        
         if (!check) {
             Base.open();
         }
@@ -100,7 +102,7 @@ public class ChatResource extends AbstractVerticle {
             obj.setUsername(msgs.getUsername());
             return obj;
         }).forEachOrdered((obj) -> {
-            mainList.add(0, obj);
+            mainList.add(obj);
         });
         Base.close();
         HttpServerResponse response = routingContext.response();
