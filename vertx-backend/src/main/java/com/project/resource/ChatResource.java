@@ -4,7 +4,6 @@ import com.project.dto.MessageDTO;
 import com.project.entities.MessageEntity;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.Json;
@@ -18,16 +17,15 @@ import io.vertx.ext.web.handler.sockjs.BridgeOptions;
 import io.vertx.ext.web.handler.sockjs.PermittedOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import org.javalite.activejdbc.Base;
 
 public class ChatResource extends AbstractVerticle {
 
     private final EventBus eventBus = null;
-    //private  List<MessageDTO> mainList = new ArrayList<>();
-    private final Collection<MessageDTO> mainList = Collections.synchronizedList(new ArrayList<>());
+    private  List<MessageDTO> mainList = new ArrayList<>();
+   /// private final Collection<MessageDTO> mainList = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public void start() throws Exception {
@@ -50,17 +48,14 @@ public class ChatResource extends AbstractVerticle {
         });
         router.route("/*").handler(StaticHandler.create());
 
-        EventBus eventBusLocal = vertx.eventBus();
-
-        eventBusLocal.consumer("messagesBus", (Message<Object> message) -> {
-            //get from message bus and save to list
-            MessageDTO customMessage = (MessageDTO) message.body();
-            System.out.println("1. MessagesBus Receiver: " + customMessage.toString());
-            mainList.add(customMessage);
-            message.reply(customMessage);
-        });
-        
-        
+        //     EventBus eventBusLocal = vertx.eventBus();
+//        eventBusLocal.consumer("messagesBus", (Message<Object> message) -> {
+//            //get from message bus and save to list
+//            MessageDTO customMessage = (MessageDTO) message.body();
+//            System.out.println("1. MessagesBus Receiver: " + customMessage.toString());
+//            mainList.add(customMessage);
+//            message.reply(customMessage);
+//        });
         vertx.createHttpServer().requestHandler(router::accept).listen(9999);
         System.out.println("Service running at 0.0.0.0:9999");
     }
@@ -79,17 +74,35 @@ public class ChatResource extends AbstractVerticle {
         Date currentDate = new Date();
 
         System.out.println("!!!.Store message in database");
-        Base.open();
-        MessageEntity userMessage  = new MessageEntity(message.getUsername(), message.getMessage(), currentDate);
+        boolean check = Base.hasConnection();
+        if (!check) {
+            Base.open();
+        }
+        MessageEntity userMessage = new MessageEntity(message.getUsername(), message.getMessage(), currentDate);
         userMessage.saveIt();
         Base.close();
         System.out.println("4. Publishing logs to middleBus!!!! ");
-        
+
         eventBusLocal.publish("middleBus", "Message from @" + message.getUsername() + " received at " + currentDate.toString());
 
     }
 
     private void getMessagesFromBus(RoutingContext routingContext) {
+        //get from database
+        boolean check = Base.hasConnection();
+        if (!check) {
+            Base.open();
+        }
+        List<MessageEntity> messages = MessageEntity.findAll().orderBy("received_date DESC");
+        messages.stream().map((msgs) -> {
+            MessageDTO obj = new MessageDTO();
+            obj.setMessage(msgs.getMessage());
+            obj.setUsername(msgs.getUsername());
+            return obj;
+        }).forEachOrdered((obj) -> {
+            mainList.add(0, obj);
+        });
+        Base.close();
         HttpServerResponse response = routingContext.response();
         response.putHeader("content-type", "application/json; charset=utf-8")
                 .end(Json.encodePrettily(mainList));

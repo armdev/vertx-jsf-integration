@@ -9,6 +9,9 @@ public class MessageEntity extends Model {
 
     private static final long serialVersionUID = 1L;
 
+    public MessageEntity() {
+    }
+
     public MessageEntity(String username, String message, Date receivedDate) {
         set("username", username, "message", message, "received_date", receivedDate);
     }
