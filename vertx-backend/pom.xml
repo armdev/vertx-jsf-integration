@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.project.backend</groupId>
-    <artifactId>aloha</artifactId>
+    <artifactId>vertx-backend</artifactId>
     <version>0.0.1</version>
     <packaging>jar</packaging>
 
@@ -13,7 +13,7 @@
 
     <properties>		
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.main.class>com.project.backend.ApplicationStart</java.main.class>       
+        <java.main.class>com.project.application.ApplicationStart</java.main.class>       
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>     
         <netflix.feign.version>8.18.0</netflix.feign.version>
@@ -25,8 +25,13 @@
         <docker.maven.plugin.version>0.14.2</docker.maven.plugin.version>              
     </properties>
 
-    <dependencies>
-         <dependency>
+    <dependencies>        
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.42</version>
+        </dependency>        
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.16</version>
@@ -87,6 +92,17 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.javalite</groupId>
+            <artifactId>activejdbc</artifactId>
+            <version>1.4.13</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>opensymphony</groupId>
+                    <artifactId>oscache</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
     <build>
         <finalName>vertx-backend</finalName>
@@ -98,6 +114,19 @@
                 <configuration>
                     <mainClass>${java.main.class}</mainClass>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.javalite</groupId>
+                <artifactId>activejdbc-instrumentation</artifactId>
+                <version>1.4.13</version>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>instrument</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -116,7 +145,8 @@
                                     <mainClass>${java.main.class}</mainClass>
                                 </transformer>
                             </transformers>
-                            <outputFile>${project.build.directory}/${project.artifactId}-fat.jar
+                            <outputFile>
+                                ${project.build.directory}/${project.artifactId}-fat.jar
                             </outputFile>
                         </configuration>
                     </execution>

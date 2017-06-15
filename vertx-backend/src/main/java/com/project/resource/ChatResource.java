@@ -1,8 +1,10 @@
 package com.project.resource;
 
 import com.project.dto.MessageDTO;
+import com.project.entities.MessageEntity;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.Json;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import org.javalite.activejdbc.Base;
 
 public class ChatResource extends AbstractVerticle {
 
@@ -39,27 +42,31 @@ public class ChatResource extends AbstractVerticle {
         router.route().handler(BodyHandler.create());
         router.route().handler(CorsHandler.create("*")
                 .allowedMethod(HttpMethod.GET)
-                .allowedHeader("Content-Type"));        
-        router.post("/api/message").handler(this::publishToEventBus);        
+                .allowedHeader("Content-Type"));
+        router.post("/api/message").handler(this::publishToEventBus);
         router.get("/api/messagelist").handler(this::getMessagesFromBus);
         router.get("/api/health").handler(ctx -> {
             ctx.response().end("I'm ok");
         });
         router.route("/*").handler(StaticHandler.create());
+
         EventBus eventBusLocal = vertx.eventBus();
-        eventBusLocal.consumer("messagesBus", message -> {
+
+        eventBusLocal.consumer("messagesBus", (Message<Object> message) -> {
+            //get from message bus and save to list
             MessageDTO customMessage = (MessageDTO) message.body();
             System.out.println("1. MessagesBus Receiver: " + customMessage.toString());
-            
             mainList.add(customMessage);
             message.reply(customMessage);
-        });   
-        vertx.createHttpServer().requestHandler(router::accept).listen(9999);       
+        });
+        
+        
+        vertx.createHttpServer().requestHandler(router::accept).listen(9999);
         System.out.println("Service running at 0.0.0.0:9999");
     }
 
     private void publishToEventBus(RoutingContext routingContext) {
-        EventBus eventBusLocal = vertx.eventBus();        
+        EventBus eventBusLocal = vertx.eventBus();
         final MessageDTO message = Json.decodeValue(routingContext.getBodyAsString(),
                 MessageDTO.class);
         System.out.println("2. Publishing message to bus ");
@@ -70,7 +77,14 @@ public class ChatResource extends AbstractVerticle {
                 .end(Json.encodePrettily(message));
         eventBusLocal.publish("messagesBus", message);
         Date currentDate = new Date();
+
+        System.out.println("!!!.Store message in database");
+        Base.open();
+        MessageEntity userMessage  = new MessageEntity(message.getUsername(), message.getMessage(), currentDate);
+        userMessage.saveIt();
+        Base.close();
         System.out.println("4. Publishing logs to middleBus!!!! ");
+        
         eventBusLocal.publish("middleBus", "Message from @" + message.getUsername() + " received at " + currentDate.toString());
 
     }
