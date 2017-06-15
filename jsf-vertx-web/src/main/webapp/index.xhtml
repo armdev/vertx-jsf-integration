@@ -17,7 +17,7 @@
         <h:form>
             <p:layout  fullPage="true" style="min-width:400px;min-height:200px;">
                 <p:layoutUnit position="west" resizable="true" size="400" minSize="40" maxSize="600">                   
-                    <p:panel id="panel" style="width: 400px;" header="Message Effects" toggleable="true">
+                    <p:panel id="panel" style="width: 400px;" header="Super Chat" toggleable="true">
                         <h:panelGrid columns="2" cellpadding="5">
                             <p:outputLabel for="username" value="UserName" />
                             <input type="text" jsf:id="username" class="form-control" jsf:value="#{frontBean.message.username}"
@@ -31,7 +31,7 @@
                 </p:layoutUnit>
                 <p:layoutUnit position="center">
                     <p:poll interval="2"  update="chat" listener="#{frontBean.addMessage()}" />
-                    <p:dataTable value="#{frontBean.messageList}" id="chat" rendered="#{not empty frontBean.messageList}" rows="15" var="list">
+                    <p:dataTable value="#{frontBean.messageList}" id="chat" rendered="#{not empty frontBean.messageList}" rows="100" var="list">
                         <p:column headerText="Top Messages">
                             @ #{list.username} - #{list.message} 
                         </p:column>
@@ -40,7 +40,7 @@
                 <p:layoutUnit position="east"  size="400">                   
                     <p:poll interval="2"  update="userlog" listener="#{frontBean.addMessage1()}"/>                                
                     <p:dataTable value="#{messageBean.logList}" id="userlog"
-                                 rendered="#{not empty messageBean.logList}" rows="15" var="list">
+                                 rendered="#{not empty messageBean.logList}" rows="70" var="list">
                         <p:column headerText="Top logs">
                             @ #{list}
                         </p:column>
