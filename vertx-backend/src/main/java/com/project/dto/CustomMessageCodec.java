@@ -1,4 +1,4 @@
-package com.project.backend;
+package com.project.dto;
 
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.MessageCodec;

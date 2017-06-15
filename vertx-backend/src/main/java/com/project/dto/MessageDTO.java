@@ -1,4 +1,4 @@
-package com.project.backend;
+package com.project.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
