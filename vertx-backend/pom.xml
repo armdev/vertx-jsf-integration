@@ -34,9 +34,10 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.16</version>
+            <version>1.18.10</version>
             <scope>provided</scope>
-        </dependency>      
+        </dependency>
+        
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-core</artifactId>

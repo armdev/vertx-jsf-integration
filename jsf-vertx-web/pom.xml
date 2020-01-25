@@ -15,12 +15,12 @@
     </properties>
     
     <dependencies>
-     <dependency>
+        <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>6.1</version>
         </dependency>       
-          <dependency> 
+        <dependency> 
             <groupId>org.primefaces.themes</groupId>  
             <artifactId>all-themes</artifactId>  
             <version>1.0.10</version> 
@@ -90,12 +90,14 @@
             <artifactId>jackson-mapper-asl</artifactId>  
             <version>1.9.13</version> 
         </dependency>        
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.16</version>
+            <version>1.18.10</version>
             <scope>provided</scope>
-        </dependency>      
+        </dependency>
+    
         <dependency> 
             <groupId>org.apache.httpcomponents</groupId>  
             <artifactId>httpclient</artifactId>  
