@@ -17,7 +17,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>     
         <netflix.feign.version>8.18.0</netflix.feign.version>
-        <vertx.version>3.4.1</vertx.version>
+        <vertx.version>3.8.5</vertx.version>
         <hystrix.version>1.5.6</hystrix.version>
         <version.exec.plugin>1.4.0</version.exec.plugin>
         <brave.version>3.7.0</brave.version>      
